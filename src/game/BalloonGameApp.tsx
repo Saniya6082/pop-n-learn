@@ -3,8 +3,11 @@ import { LEVELS, modeKey, modeTitle, type LevelConfig, type ModeConfig, type Pro
 import { generateQuestion, type Question } from "./questions";
 import { audio } from "./audio";
 import { loadProgress, recordLevel, loadAudio, saveAudio, totalStars, bestOverall } from "./storage";
+import { SplashScreen } from "./SplashScreen";
+
 
 type Screen =
+  | { name: "splash" }
   | { name: "home" }
   | { name: "english" }
   | { name: "math" }
@@ -35,7 +38,7 @@ const RANGES_OP: Range[] = [
 ];
 
 export default function BalloonGameApp() {
-  const [screen, setScreen] = useState<Screen>({ name: "home" });
+  const [screen, setScreen] = useState<Screen>({ name: "splash" });
   const [progress, setProgress] = useState<ProgressData>(() => loadProgress());
   const [muted, setMuted] = useState<boolean>(() => loadAudio().muted);
 
@@ -54,6 +57,7 @@ export default function BalloonGameApp() {
         {muted ? "🔇" : "🔊"}
       </button>
 
+      {screen.name === "splash" && <SplashScreen onDone={() => goto({ name: "home" })} />}
       {screen.name === "home" && (
         <Home progress={progress} onPickCategory={(c) => goto({ name: c === "english" ? "english" : "math" })} />
       )}
