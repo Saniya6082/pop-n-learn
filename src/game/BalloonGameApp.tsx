@@ -57,6 +57,7 @@ export default function BalloonGameApp() {
         {muted ? "🔇" : "🔊"}
       </button>
 
+      {screen.name === "splash" && <SplashScreen onDone={() => goto({ name: "home" })} />}
       {screen.name === "home" && (
         <Home progress={progress} onPickCategory={(c) => goto({ name: c === "english" ? "english" : "math" })} />
       )}
