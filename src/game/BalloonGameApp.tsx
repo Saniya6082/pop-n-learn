@@ -130,7 +130,8 @@ export default function BalloonGameApp() {
       )}
       {screen.name === "complete" && (
         <ResultScreen
-          title="🎉 LEVEL COMPLETE"
+          variant="win"
+          title="LEVEL COMPLETE"
           subtitle={`Level ${screen.level} — ${modeTitle(screen.mode)}`}
           score={screen.score}
           stars={screen.stars}
@@ -144,7 +145,8 @@ export default function BalloonGameApp() {
       )}
       {screen.name === "gameover" && (
         <ResultScreen
-          title="🎮 GAME OVER"
+          variant="lose"
+          title="GAME OVER"
           subtitle={`Reached Level ${screen.level}`}
           score={screen.score}
           stars={0}
@@ -158,7 +160,8 @@ export default function BalloonGameApp() {
       )}
       {screen.name === "victory" && (
         <ResultScreen
-          title="🏆 YOU WIN!"
+          variant="win"
+          title="YOU WIN!"
           subtitle={`Mastered ${modeTitle(screen.mode)}`}
           score={screen.score}
           stars={3}
@@ -679,33 +682,123 @@ function shade(hex: string, percent: number) {
 }
 
 /* ---------- Result Screens ---------- */
-function ResultScreen({ title, subtitle, score, stars, accent, buttons, showConfetti }: {
+function ResultScreen({ variant = "win", title, subtitle, score, stars, accent, buttons, showConfetti }: {
+  variant?: "win" | "lose";
   title: string; subtitle: string; score: number; stars: number; accent: string; showConfetti?: boolean;
   buttons: { label: string; primary?: boolean; onClick: () => void }[];
 }) {
+  const isWin = variant === "win";
   return (
-    <div className="absolute inset-0 flex items-center justify-center px-5 z-40 bg-black/30">
-      {(showConfetti || stars > 0) && <Confetti count={showConfetti ? 80 : 40} />}
-      <div className="card-3d w-full max-w-sm p-6 text-center bounce-in" style={{ background: "linear-gradient(180deg,#fff,#fff5f9)" }}>
-        <div className="text-3xl font-extrabold mb-1 rainbow shadow-text">{title}</div>
+    <div className={`absolute inset-0 flex items-center justify-center px-5 z-40 ${isWin ? "bg-black/30" : "bg-black/60"} result-overlay`}>
+      {isWin && <SunburstRays />}
+      {isWin && (showConfetti || stars > 0) && <Confetti count={showConfetti ? 100 : 50} />}
+      {isWin && <RisingStars />}
+      {!isWin && <FallingHearts />}
+      <div
+        className={`relative card-3d w-full max-w-sm p-6 text-center ${isWin ? "result-win-pop" : "result-lose-drop"}`}
+        style={{ background: isWin ? "linear-gradient(180deg,#fff,#fff5f9)" : "linear-gradient(180deg,#fff,#ffecec)" }}
+      >
+        <div className={`mx-auto mb-3 text-6xl ${isWin ? "trophy-bounce" : "sad-shake inline-block"}`}>
+          {isWin ? "🏆" : "💔"}
+        </div>
+        <div className={`text-3xl font-extrabold mb-1 shadow-text ${isWin ? "rainbow" : ""}`} style={!isWin ? { color: accent } : undefined}>
+          {title}
+        </div>
         <div className="text-sm font-semibold text-foreground/70 mb-4">{subtitle}</div>
         <div className="flex justify-center gap-1 text-4xl mb-4">
-          {[1,2,3].map(i => <span key={i} className="bounce-in" style={{ animationDelay: `${i * 120}ms` }}>{i <= stars ? "⭐" : "☆"}</span>)}
+          {[1,2,3].map(i => (
+            <span
+              key={i}
+              className={i <= stars ? "star-pop" : "bounce-in opacity-60"}
+              style={{ animationDelay: `${i * 180}ms` }}
+            >
+              {i <= stars ? "⭐" : "☆"}
+            </span>
+          ))}
         </div>
-        <div className="text-5xl font-extrabold mb-1" style={{ color: accent }}>{score}</div>
+        <div
+          className={`text-5xl font-extrabold mb-1 ${isWin ? "score-count" : ""}`}
+          style={{ color: accent }}
+        >
+          {score}
+        </div>
         <div className="text-xs font-bold uppercase text-foreground/60 mb-5">Score</div>
         <div className="space-y-2">
           {buttons.map((b, i) => (
             <button key={i} onClick={b.onClick}
-              className="btn-3d w-full"
+              className={`btn-3d w-full ${b.primary && isWin ? "pulse-soft" : ""}`}
               style={{
-                background: b.primary ? `linear-gradient(135deg,${accent},#9b6bff)` : "linear-gradient(135deg,#bbb,#999)",
+                background: b.primary
+                  ? `linear-gradient(135deg,${accent},${isWin ? "#9b6bff" : "#7a2d3a"})`
+                  : "linear-gradient(135deg,#bbb,#999)",
               }}>
               {b.label}
             </button>
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function SunburstRays() {
+  const rays = useMemo(() => Array.from({ length: 12 }, (_, i) => i * 30), []);
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-20 overflow-hidden">
+      <div className="sunburst-spin">
+        {rays.map((deg) => (
+          <div
+            key={deg}
+            className="sunburst-ray"
+            style={{ transform: `rotate(${deg}deg)` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RisingStars() {
+  const stars = useMemo(() => Array.from({ length: 14 }, (_, i) => ({
+    id: i,
+    left: Math.random() * 100,
+    delay: Math.random() * 1.6,
+    dur: 2.4 + Math.random() * 1.8,
+    size: 18 + Math.random() * 18,
+    emoji: i % 3 === 0 ? "✨" : i % 3 === 1 ? "⭐" : "🌟",
+  })), []);
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden z-30">
+      {stars.map(s => (
+        <div key={s.id} className="rising-star" style={{
+          left: `${s.left}%`,
+          fontSize: s.size,
+          animationDelay: `${s.delay}s`,
+          animationDuration: `${s.dur}s`,
+        }}>{s.emoji}</div>
+      ))}
+    </div>
+  );
+}
+
+function FallingHearts() {
+  const items = useMemo(() => Array.from({ length: 10 }, (_, i) => ({
+    id: i,
+    left: Math.random() * 100,
+    delay: Math.random() * 1.2,
+    dur: 2.4 + Math.random() * 1.6,
+    size: 20 + Math.random() * 14,
+  })), []);
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden z-30">
+      {items.map(s => (
+        <div key={s.id} className="falling-heart" style={{
+          left: `${s.left}%`,
+          fontSize: s.size,
+          animationDelay: `${s.delay}s`,
+          animationDuration: `${s.dur}s`,
+        }}>💔</div>
+      ))}
     </div>
   );
 }
