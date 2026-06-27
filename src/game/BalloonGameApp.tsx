@@ -130,7 +130,8 @@ export default function BalloonGameApp() {
       )}
       {screen.name === "complete" && (
         <ResultScreen
-          title="🎉 LEVEL COMPLETE"
+          variant="win"
+          title="LEVEL COMPLETE"
           subtitle={`Level ${screen.level} — ${modeTitle(screen.mode)}`}
           score={screen.score}
           stars={screen.stars}
@@ -144,7 +145,8 @@ export default function BalloonGameApp() {
       )}
       {screen.name === "gameover" && (
         <ResultScreen
-          title="🎮 GAME OVER"
+          variant="lose"
+          title="GAME OVER"
           subtitle={`Reached Level ${screen.level}`}
           score={screen.score}
           stars={0}
@@ -158,7 +160,8 @@ export default function BalloonGameApp() {
       )}
       {screen.name === "victory" && (
         <ResultScreen
-          title="🏆 YOU WIN!"
+          variant="win"
+          title="YOU WIN!"
           subtitle={`Mastered ${modeTitle(screen.mode)}`}
           score={screen.score}
           stars={3}
