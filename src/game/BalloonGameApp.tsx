@@ -4,6 +4,7 @@ import { generateQuestion, type Question } from "./questions";
 import { audio } from "./audio";
 import { loadProgress, recordLevel, loadAudio, saveAudio, totalStars, bestOverall } from "./storage";
 import { SplashScreen } from "./SplashScreen";
+import winningAnimation from "@/assets/winning.svg";
 
 
 type Screen =
@@ -689,7 +690,15 @@ function ResultScreen({ variant = "win", title, subtitle, score, stars, accent, 
 }) {
   const isWin = variant === "win";
   return (
-    <div className={`absolute inset-0 flex items-center justify-center px-5 z-40 ${isWin ? "bg-black/30" : "bg-black/60"} result-overlay`}>
+    <div className={`absolute inset-0 flex items-center justify-center px-5 z-40 ${isWin ? "bg-gradient-to-b from-indigo-900/40 via-purple-800/30 to-pink-500/30" : "bg-black/60"} result-overlay`}>
+      {isWin && (
+        <img
+          src={winningAnimation}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 w-full h-full object-cover z-10 opacity-90"
+        />
+      )}
       {isWin && <SunburstRays />}
       {isWin && (showConfetti || stars > 0) && <Confetti count={showConfetti ? 100 : 50} />}
       {isWin && <RisingStars />}
