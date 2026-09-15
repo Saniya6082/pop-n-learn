@@ -8,6 +8,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Educational balloon popping game: pop the right letter, word, number, or math answer." },
       { property: "og:title", content: "Balloon Pop — Learn & Play" },
       { property: "og:description", content: "Educational balloon popping game with levels, lives, combos and confetti." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Index,

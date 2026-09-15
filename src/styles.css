@@ -23,24 +23,36 @@
   --color-destructive: var(--destructive);
   --color-success: var(--success);
   --font-display: var(--font-display);
+  --font-body: var(--font-body);
 }
 
 :root {
-  --radius: 1rem;
-  --background: oklch(0.97 0.02 230);
-  --foreground: oklch(0.22 0.05 270);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.05 270);
-  --primary: oklch(0.65 0.2 295);
-  --primary-foreground: oklch(1 0 0);
-  --accent: oklch(0.78 0.18 50);
-  --accent-foreground: oklch(0.22 0.05 270);
-  --muted: oklch(0.94 0.02 250);
-  --muted-foreground: oklch(0.45 0.04 270);
-  --border: oklch(0.88 0.02 250);
-  --destructive: oklch(0.62 0.24 25);
-  --success: oklch(0.7 0.18 145);
-  --font-display: "Fredoka", "Baloo 2", system-ui, -apple-system, sans-serif;
+  --radius: 0.75rem;
+  --background: oklch(0.97 0.02 20);
+  --foreground: oklch(0.27 0.07 315);
+  --card: oklch(0.99 0.012 20);
+  --card-foreground: oklch(0.27 0.07 315);
+  --primary: oklch(0.62 0.2 12);
+  --primary-foreground: oklch(0.98 0.015 20);
+  --accent: oklch(0.74 0.12 170);
+  --accent-foreground: oklch(0.27 0.07 315);
+  --muted: oklch(0.91 0.025 20);
+  --muted-foreground: oklch(0.48 0.055 315);
+  --border: oklch(0.35 0.07 315);
+  --destructive: oklch(0.58 0.22 20);
+  --success: oklch(0.68 0.13 165);
+  --font-display: "Archivo Black", system-ui, sans-serif;
+  --font-body: "Hind", system-ui, sans-serif;
+  --berry: oklch(0.62 0.2 12);
+  --plum: oklch(0.27 0.07 315);
+  --paper: oklch(0.97 0.02 20);
+  --mint: oklch(0.74 0.12 170);
+  --citrus: oklch(0.78 0.17 75);
+  --sun: oklch(0.86 0.16 90);
+  --lagoon: oklch(0.66 0.13 220);
+  --coral: oklch(0.68 0.18 28);
+  --leaf: oklch(0.55 0.12 155);
+  --ink-shadow: 0 5px 0 color-mix(in oklab, var(--plum) 88%, transparent);
 }
 
 @layer base {
@@ -49,11 +61,187 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     overscroll-behavior: none;
   }
+}
+
+/* Berry Arcade adventure-map identity */
+.font-display { font-family: var(--font-display); letter-spacing: 0; }
+.game-shell {
+  background: var(--paper);
+  color: var(--plum);
+}
+.map-backdrop, .island-splash {
+  background:
+    radial-gradient(circle at 16% 20%, color-mix(in oklab, var(--berry) 12%, transparent) 0 2px, transparent 3px),
+    linear-gradient(145deg, var(--paper), color-mix(in oklab, var(--mint) 20%, var(--paper)));
+  background-size: 22px 22px, 100% 100%;
+}
+.map-sun, .island-sun {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 3px solid var(--plum);
+  border-radius: 50%;
+  background: var(--sun);
+  opacity: .35;
+}
+.map-sun { right: -75px; top: 11%; }
+.island-sun { right: -55px; top: 8%; }
+.map-foliage, .island-leaf {
+  position: absolute;
+  width: 160px;
+  height: 240px;
+  border: 3px solid var(--plum);
+  border-radius: 80% 12% 75% 16%;
+  background: var(--mint);
+  opacity: .32;
+  transform: rotate(25deg);
+}
+.map-foliage-a, .island-leaf-left { left: -110px; bottom: 9%; }
+.map-foliage-b, .island-leaf-right { right: -120px; bottom: -20px; transform: rotate(-28deg); background: var(--berry); }
+.map-dots, .island-route {
+  position: absolute;
+  color: var(--plum);
+  font-family: var(--font-display);
+  opacity: .24;
+  writing-mode: vertical-lr;
+  font-size: 24px;
+  line-height: 1;
+}
+.map-dots { left: 9%; top: 38%; }
+.island-route { right: 15%; top: 35%; transform: rotate(18deg); }
+.map-kicker {
+  font-family: var(--font-display);
+  color: var(--berry);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+.map-stat {
+  border: 2px solid var(--plum);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 3px 3px 0 var(--plum);
+}
+.adventure-trail::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  height: 76%;
+  border-left: 7px dotted color-mix(in oklab, var(--plum) 35%, transparent);
+  transform: rotate(17deg);
+}
+.island-stop {
+  position: absolute;
+  width: min(88%, 330px);
+  min-height: 112px;
+  display: grid;
+  grid-template-columns: 78px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  border: 3px solid var(--plum);
+  border-radius: 46% 13% 42% 16% / 30% 18% 34% 22%;
+  padding: 14px;
+  text-align: left;
+  color: var(--plum);
+  background: var(--card);
+  box-shadow: 7px 8px 0 var(--plum);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.island-stop:active { transform: translate(4px, 5px); box-shadow: 2px 3px 0 var(--plum); }
+.island-stop-left { left: 0; top: 8%; }
+.island-stop-right { right: 0; bottom: 9%; }
+.island-marker {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--plum);
+  border-radius: 50% 45% 48% 42%;
+  background: var(--berry);
+  color: var(--primary-foreground);
+  font-family: var(--font-display);
+  font-size: 24px;
+}
+.island-stop-right .island-marker { background: var(--mint); color: var(--plum); }
+.island-arrow { font-family: var(--font-display); font-size: 25px; color: var(--berry); }
+.map-ticket {
+  display: inline-block;
+  border: 2px solid var(--plum);
+  border-radius: 6px;
+  padding: 8px 13px;
+  background: var(--sun);
+  color: var(--plum);
+  font-family: var(--font-display);
+  font-size: 11px;
+  box-shadow: 3px 3px 0 var(--plum);
+}
+.map-icon-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 2px solid var(--plum);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--plum);
+  font-size: 18px;
+  box-shadow: 3px 3px 0 var(--plum);
+}
+.choice-ticket {
+  border: 3px solid var(--plum);
+  border-radius: 10px 26px 10px 26px;
+  background: var(--card);
+  color: var(--plum);
+  box-shadow: 6px 6px 0 var(--berry);
+}
+.choice-ticket:nth-child(even) { background: color-mix(in oklab, var(--mint) 35%, var(--paper)); box-shadow-color: var(--plum); }
+.splash-stamp {
+  width: 190px;
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 4px double var(--plum);
+  border-radius: 50%;
+  background: var(--mint);
+  color: var(--plum);
+  box-shadow: 9px 10px 0 var(--plum);
+  transform: rotate(-5deg);
+}
+.splash-stamp-small { font-family: var(--font-display); font-size: 13px; }
+.splash-stamp-main { font-family: var(--font-display); font-size: 64px; line-height: .95; color: var(--berry); }
+
+/* Restyle existing shared game surfaces */
+.card-3d {
+  border: 2px solid var(--plum);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 4px 5px 0 var(--plum);
+}
+.btn-3d {
+  border: 2px solid var(--plum);
+  border-radius: 8px;
+  color: var(--primary-foreground);
+  box-shadow: 4px 5px 0 var(--plum);
+}
+.btn-3d:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--plum); }
+.rainbow { background: none; color: var(--berry); }
+.shadow-text { text-shadow: none; }
+.balloon {
+  border: 3px solid var(--plum);
+  color: var(--primary-foreground);
+  box-shadow: inset -8px -10px 0 color-mix(in oklab, var(--plum) 18%, transparent), 4px 5px 0 var(--plum);
+}
+.balloon-string { background: var(--plum); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
 /* Sky background gradient */
