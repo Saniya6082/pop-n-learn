@@ -648,24 +648,13 @@ function Balloon({ b, onPop, paused }: { b: BalloonInst; onPop: (x: number, y: n
         onClick={handle}
         onTouchStart={handle}
         className={`balloon ${b.state === "shaking" ? "balloon-shake" : "balloon-sway"}`}
-        style={{ background: `radial-gradient(circle at 30% 28%, #ffffffaa, ${b.color} 55%, ${shade(b.color, -25)})`, color: b.color }}
+        style={{ background: `radial-gradient(circle at 30% 28%, color-mix(in oklab, var(--paper) 72%, transparent), ${b.color} 55%, color-mix(in oklab, ${b.color} 72%, var(--plum)))`, color: b.color }}
       >
         <span style={{ color: "white" }}>{b.label}</span>
       </div>
       <div className="balloon-string" />
     </div>
   );
-}
-
-function shade(hex: string, percent: number) {
-  const n = parseInt(hex.replace("#", ""), 16);
-  let r = (n >> 16) + percent;
-  let g = ((n >> 8) & 0xff) + percent;
-  let b = (n & 0xff) + percent;
-  r = Math.max(0, Math.min(255, r));
-  g = Math.max(0, Math.min(255, g));
-  b = Math.max(0, Math.min(255, b));
-  return `rgb(${r},${g},${b})`;
 }
 
 /* ---------- Result Screens ---------- */
