@@ -21,7 +21,7 @@ type Screen =
   | { name: "victory"; mode: ModeConfig; score: number };
 
 const BALLOON_COLORS = [
-  "#ff5e7e","#ffb84d","#ffe24a","#7be07b","#4dc0ff","#9b6bff","#ff8acb","#5ee0c5",
+  "var(--berry)","var(--citrus)","var(--sun)","var(--mint)","var(--lagoon)","var(--plum)","var(--coral)","var(--leaf)",
 ];
 
 const RANGES_NUM: Range[] = [
@@ -48,11 +48,11 @@ export default function BalloonGameApp() {
   const goto = (s: Screen) => { audio.resume(); setScreen(s); };
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden sky-bg select-none no-scroll">
-      <Clouds />
+    <div className="game-shell relative h-[100dvh] w-full overflow-hidden select-none no-scroll">
+      <MapBackdrop />
       <button
         onClick={() => setMuted(m => !m)}
-        className="absolute top-3 right-3 z-50 h-10 w-10 rounded-full bg-white/80 backdrop-blur shadow-md flex items-center justify-center text-lg"
+        className="map-icon-button absolute right-4 top-4 z-50"
         aria-label="Toggle sound"
       >
         {muted ? "🔇" : "🔊"}
@@ -179,23 +179,13 @@ export default function BalloonGameApp() {
 }
 
 /* ---------- Backgrounds ---------- */
-function Clouds() {
-  const clouds = useMemo(() => Array.from({ length: 5 }, (_, i) => ({
-    id: i,
-    top: 8 + i * 14 + (i % 2 === 0 ? 0 : 6),
-    size: 60 + (i % 3) * 30,
-    dur: 40 + (i * 7) % 25,
-    delay: -i * 8,
-    opacity: 0.6 + (i % 3) * 0.12,
-  })), []);
+function MapBackdrop() {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {clouds.map(c => (
-        <div key={c.id} className="cloud cloud-drift"
-          style={{ top: `${c.top}%`, width: c.size, height: c.size * 0.45,
-                   animationDuration: `${c.dur}s`, animationDelay: `${c.delay}s`,
-                   opacity: c.opacity }} />
-      ))}
+    <div className="map-backdrop pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div className="map-sun" />
+      <div className="map-foliage map-foliage-a" />
+      <div className="map-foliage map-foliage-b" />
+      <div className="map-dots">· · · · ·</div>
     </div>
   );
 }
@@ -208,39 +198,39 @@ function Home({ progress, onPickCategory }: {
   const best = bestOverall(progress);
   const stars = totalStars(progress);
   return (
-    <div className="relative h-full w-full flex flex-col items-center px-5 pt-10 pb-6">
-      <div className="text-center mb-4 bounce-in">
-        <div className="text-4xl mb-1">🎈</div>
-        <h1 className="text-3xl font-extrabold rainbow shadow-text">Balloon Pop</h1>
-        <p className="text-sm text-foreground/70 font-semibold">Learn & Play</p>
+    <div className="relative flex h-full w-full flex-col items-center overflow-hidden px-5 pb-6 pt-8">
+      <div className="mb-3 text-center bounce-in">
+        <p className="map-kicker">TODAY'S EXPEDITION</p>
+        <h1 className="font-display text-4xl uppercase leading-none text-foreground">Choose an island</h1>
+        <p className="mt-2 text-sm font-semibold text-foreground/60">Follow the trail and collect every star.</p>
       </div>
-      <div className="grid grid-cols-2 gap-3 w-full max-w-sm mb-5">
-        <StatCard icon="🏆" label="Best" value={best} bg="#fff3d6" />
-        <StatCard icon="⭐" label="Stars" value={stars} bg="#ffe0ea" />
+      <div className="mb-4 grid w-full max-w-sm grid-cols-2 gap-3">
+        <StatCard icon="◆" label="Best" value={best} />
+        <StatCard icon="★" label="Stars" value={stars} />
       </div>
-      <div className="w-full max-w-sm space-y-4 mt-2">
+      <div className="adventure-trail relative mt-1 w-full max-w-sm flex-1">
         <BigCard
-          gradient="linear-gradient(135deg,#ff8acb,#9b6bff)"
           onClick={() => onPickCategory("english")}
-          emoji="📚" title="English"
+          marker="Aa" title="English Island"
           subtitle="Letters & Words"
+          align="left"
         />
         <BigCard
-          gradient="linear-gradient(135deg,#4dc0ff,#5ee0c5)"
           onClick={() => onPickCategory("math")}
-          emoji="🔢" title="Mathematics"
+          marker="1+" title="Math Island"
           subtitle="Numbers & Operations"
+          align="right"
         />
       </div>
-      <div className="mt-auto text-xs text-foreground/50 font-semibold">Tap a category to begin</div>
+      <div className="map-ticket mt-3">START YOUR JOURNEY</div>
     </div>
   );
 }
 
-function StatCard({ icon, label, value, bg }: { icon: string; label: string; value: number; bg: string }) {
+function StatCard({ icon, label, value }: { icon: string; label: string; value: number }) {
   return (
-    <div className="card-3d p-3 flex items-center gap-3 bounce-in" style={{ background: bg }}>
-      <div className="text-2xl">{icon}</div>
+    <div className="map-stat flex items-center gap-3 p-3 bounce-in">
+      <div className="text-xl text-primary">{icon}</div>
       <div>
         <div className="text-[11px] uppercase tracking-wide text-foreground/60 font-bold">{label}</div>
         <div className="text-xl font-extrabold leading-none">{value}</div>
@@ -249,21 +239,18 @@ function StatCard({ icon, label, value, bg }: { icon: string; label: string; val
   );
 }
 
-function BigCard({ gradient, onClick, emoji, title, subtitle }: {
-  gradient: string; onClick: () => void; emoji: string; title: string; subtitle: string;
+function BigCard({ onClick, marker, title, subtitle, align }: {
+  onClick: () => void; marker: string; title: string; subtitle: string; align: "left" | "right";
 }) {
   return (
     <button onClick={onClick}
-      className="w-full text-left rounded-3xl p-5 text-white shadow-xl active:scale-[0.98] transition pulse-soft"
-      style={{ background: gradient, boxShadow: "0 14px 30px rgba(80,60,140,0.35), inset 0 -6px 0 rgba(0,0,0,0.12)" }}>
-      <div className="flex items-center gap-4">
-        <div className="text-5xl drop-shadow">{emoji}</div>
-        <div>
-          <div className="text-2xl font-extrabold shadow-text">{title}</div>
-          <div className="text-sm font-semibold opacity-90">{subtitle}</div>
+      className={`island-stop island-stop-${align}`}>
+      <div className="island-marker">{marker}</div>
+      <div className="island-label">
+          <div className="font-display text-lg uppercase leading-tight">{title}</div>
+          <div className="text-sm font-semibold opacity-70">{subtitle}</div>
         </div>
-        <div className="ml-auto text-3xl">›</div>
-      </div>
+      <span className="island-arrow">→</span>
     </button>
   );
 }
@@ -271,9 +258,9 @@ function BigCard({ gradient, onClick, emoji, title, subtitle }: {
 /* ---------- Pickers ---------- */
 function TopBar({ title, back }: { title: string; back: () => void }) {
   return (
-    <div className="flex items-center gap-3 mb-4">
-      <button onClick={back} className="h-10 w-10 rounded-full bg-white/80 shadow flex items-center justify-center text-xl">←</button>
-      <h2 className="text-2xl font-extrabold shadow-text rainbow">{title}</h2>
+    <div className="mb-5 flex items-center gap-3">
+      <button onClick={back} className="map-icon-button" aria-label="Go back">←</button>
+      <h2 className="font-display text-2xl uppercase leading-none text-foreground">{title}</h2>
     </div>
   );
 }
@@ -288,8 +275,8 @@ function CategoryPicker({ title, back, options }: {
       <div className="space-y-3 max-w-sm mx-auto">
         {options.map((o, i) => (
           <button key={i} onClick={o.onPick}
-            className="w-full rounded-2xl p-5 text-white text-xl font-extrabold shadow-lg active:scale-[0.98] bounce-in shadow-text"
-            style={{ background: `linear-gradient(135deg, ${o.colors[0]}, ${o.colors[1]})`, animationDelay: `${i * 60}ms` }}>
+            className="choice-ticket w-full p-5 text-xl font-extrabold active:scale-[0.98] bounce-in"
+            style={{ animationDelay: `${i * 60}ms` }}>
             {o.label}
           </button>
         ))}
@@ -304,13 +291,12 @@ function RangePicker({ title, ranges, back, onPick }: {
   return (
     <div className="relative h-full w-full px-5 pt-10 pb-6 overflow-y-auto">
       <TopBar title={title} back={back} />
-      <p className="text-sm text-foreground/70 font-semibold mb-3 max-w-sm mx-auto">Pick a range</p>
+      <p className="map-kicker mx-auto mb-3 max-w-sm">PICK A RANGE</p>
       <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto">
         {ranges.map((r, i) => (
           <button key={r.label} onClick={() => onPick(r)}
-            className="rounded-2xl py-6 text-white font-extrabold text-xl shadow-lg active:scale-[0.98] bounce-in shadow-text"
+            className="choice-ticket py-6 text-xl font-extrabold active:scale-[0.98] bounce-in"
             style={{
-              background: `linear-gradient(135deg, ${BALLOON_COLORS[i % BALLOON_COLORS.length]}, ${BALLOON_COLORS[(i + 3) % BALLOON_COLORS.length]})`,
               animationDelay: `${i * 50}ms`,
             }}>
             {r.label}
