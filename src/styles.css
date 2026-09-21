@@ -590,3 +590,184 @@
   animation: falling-heart linear infinite;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
 }
+
+/* Candy Pop sticker-book UI */
+.game-shell {
+  background: var(--paper);
+  color: var(--foreground);
+}
+.sticker-backdrop,
+.kids-splash {
+  background:
+    radial-gradient(circle at 20% 14%, color-mix(in oklab, var(--sun) 28%, transparent) 0 34px, transparent 35px),
+    radial-gradient(circle at 91% 55%, color-mix(in oklab, var(--mint) 24%, transparent) 0 48px, transparent 49px),
+    linear-gradient(160deg, var(--paper), color-mix(in oklab, var(--candy) 8%, var(--paper)));
+}
+.doodle {
+  position: absolute;
+  color: color-mix(in oklab, var(--violet) 34%, transparent);
+  font-family: var(--font-display);
+  font-size: 30px;
+}
+.doodle-one { left: 7%; top: 16%; transform: rotate(-15deg); }
+.doodle-two { right: 8%; top: 26%; color: color-mix(in oklab, var(--candy) 30%, transparent); }
+.doodle-three { left: 8%; bottom: 16%; color: color-mix(in oklab, var(--mint) 55%, transparent); }
+.doodle-four { right: 9%; bottom: 9%; color: color-mix(in oklab, var(--sun) 75%, transparent); }
+.map-kicker {
+  color: var(--candy);
+  font-size: 12px;
+  font-weight: 900;
+}
+.map-icon-button {
+  border: 3px solid var(--foreground);
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: 0 4px 0 var(--foreground);
+}
+.map-icon-button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--foreground); }
+.map-stat {
+  border: 3px solid var(--foreground);
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: 0 5px 0 color-mix(in oklab, var(--violet) 42%, var(--foreground));
+}
+.sticker-book { min-height: 330px; }
+.activity-sticker {
+  position: relative;
+  min-height: 225px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 13px;
+  border: 4px solid var(--foreground);
+  padding: 18px 14px;
+  text-align: left;
+  color: var(--foreground);
+  box-shadow: 0 8px 0 var(--foreground);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.activity-sticker-left {
+  border-radius: 28px 55px 24px 38px;
+  background: color-mix(in oklab, var(--candy) 24%, var(--card));
+  transform: rotate(-2deg);
+}
+.activity-sticker-right {
+  border-radius: 52px 24px 40px 26px;
+  background: color-mix(in oklab, var(--mint) 30%, var(--card));
+  transform: translateY(18px) rotate(2deg);
+}
+.activity-sticker:active { transform: translateY(6px); box-shadow: 0 2px 0 var(--foreground); }
+.island-marker {
+  width: 78px;
+  border: 4px solid var(--foreground);
+  border-radius: 48% 52% 46% 54%;
+  background: var(--candy);
+  color: var(--primary-foreground);
+  box-shadow: 0 5px 0 color-mix(in oklab, var(--foreground) 82%, transparent);
+}
+.activity-sticker-right .island-marker { background: var(--violet); color: var(--primary-foreground); }
+.island-arrow { align-self: flex-end; color: var(--candy); }
+.play-hint {
+  border: 2px dashed color-mix(in oklab, var(--violet) 55%, transparent);
+  border-radius: 999px;
+  padding: 8px 16px;
+  color: var(--muted-foreground);
+  font-weight: 800;
+}
+.choice-ticket,
+.level-sticker,
+.card-3d {
+  border: 3px solid var(--foreground);
+  border-radius: 20px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 6px 0 var(--foreground);
+}
+.choice-ticket:nth-child(4n + 1) { background: color-mix(in oklab, var(--candy) 20%, var(--card)); }
+.choice-ticket:nth-child(4n + 2) { background: color-mix(in oklab, var(--mint) 27%, var(--card)); }
+.choice-ticket:nth-child(4n + 3) { background: color-mix(in oklab, var(--sun) 32%, var(--card)); }
+.choice-ticket:nth-child(4n) { background: color-mix(in oklab, var(--violet) 15%, var(--card)); }
+.level-sticker.is-locked { background: color-mix(in oklab, var(--muted) 75%, var(--card)); box-shadow: 0 4px 0 var(--border); }
+.level-badge {
+  flex: 0 0 auto;
+  border: 3px solid var(--foreground);
+  border-radius: 50% 45% 52% 46%;
+  color: var(--primary-foreground);
+  box-shadow: 0 4px 0 var(--foreground);
+}
+.kids-logo {
+  color: var(--violet);
+  font-size: 48px;
+  font-weight: 900;
+  text-shadow: 0 4px 0 var(--card), 0 7px 0 color-mix(in oklab, var(--violet) 35%, transparent);
+}
+.kids-logo span { color: var(--candy); }
+.mascot-balloon {
+  position: relative;
+  width: 174px;
+  height: 202px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--foreground);
+  border-radius: 50% 50% 46% 46% / 54% 54% 46% 46%;
+  background: var(--candy);
+  color: var(--foreground);
+  box-shadow: inset -12px -14px 0 color-mix(in oklab, var(--violet) 24%, transparent), 0 10px 0 var(--foreground);
+}
+.mascot-balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -25px;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 24px solid var(--foreground);
+}
+.mascot-shine { position: absolute; left: 35px; top: 28px; width: 30px; height: 15px; border-radius: 50%; background: color-mix(in oklab, var(--card) 75%, transparent); transform: rotate(-35deg); }
+.mascot-eyes { font-size: 20px; }
+.mascot-smile { margin-top: 3px; font-size: 45px; font-weight: 900; line-height: .6; }
+.sticker {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 4px solid var(--foreground);
+  color: var(--foreground);
+  font-family: var(--font-display);
+  font-weight: 900;
+  box-shadow: 0 5px 0 var(--foreground);
+}
+.sticker-star { left: 8%; top: 10%; width: 64px; height: 64px; border-radius: 45% 55% 48% 52%; background: var(--sun); transform: rotate(-12deg); }
+.sticker-letter { right: 8%; top: 18%; width: 62px; height: 72px; border-radius: 20px 34px 18px 30px; background: var(--mint); transform: rotate(10deg); font-size: 30px; }
+.sticker-number { left: 9%; bottom: 21%; width: 58px; height: 66px; border-radius: 50%; background: var(--sky); transform: rotate(8deg); font-size: 29px; }
+.sticker-sum { right: 7%; bottom: 24%; width: 74px; height: 58px; border-radius: 28px 18px 30px 20px; background: color-mix(in oklab, var(--violet) 22%, var(--card)); transform: rotate(-8deg); }
+.play-sticker {
+  display: block;
+  width: 100%;
+  border: 4px solid var(--foreground);
+  border-radius: 999px;
+  padding: 13px 18px;
+  background: var(--sun);
+  color: var(--foreground);
+  font-family: var(--font-display);
+  font-size: 17px;
+  box-shadow: 0 7px 0 var(--foreground);
+}
+.btn-3d {
+  border: 3px solid var(--foreground);
+  border-radius: 18px;
+  box-shadow: 0 6px 0 var(--foreground);
+  font-family: var(--font-display);
+}
+.balloon {
+  border: 4px solid var(--foreground);
+  box-shadow: inset -8px -10px 0 color-mix(in oklab, var(--foreground) 16%, transparent), 0 5px 0 var(--foreground);
+}
+
+@media (max-height: 700px) {
+  .activity-sticker { min-height: 180px; }
+  .sticker-book { min-height: 270px; }
+  .mascot-balloon { width: 140px; height: 162px; }
+  .kids-logo { margin-top: 28px; font-size: 40px; }
+}
