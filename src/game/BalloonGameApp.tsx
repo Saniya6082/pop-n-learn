@@ -21,7 +21,7 @@ type Screen =
   | { name: "victory"; mode: ModeConfig; score: number };
 
 const BALLOON_COLORS = [
-  "var(--berry)","var(--citrus)","var(--sun)","var(--mint)","var(--lagoon)","var(--plum)","var(--coral)","var(--leaf)",
+  "var(--candy)","var(--sun)","var(--mint)","var(--violet)","var(--sky)","var(--coral)","var(--leaf)","var(--berry)",
 ];
 
 const RANGES_NUM: Range[] = [
@@ -49,7 +49,7 @@ export default function BalloonGameApp() {
 
   return (
     <div className="game-shell relative h-[100dvh] w-full overflow-hidden select-none no-scroll">
-      <MapBackdrop />
+      <StickerBackdrop />
       <button
         onClick={() => setMuted(m => !m)}
         className="map-icon-button absolute right-4 top-4 z-50"
@@ -67,8 +67,8 @@ export default function BalloonGameApp() {
           title="📚 English"
           back={() => goto({ name: "home" })}
           options={[
-            { label: "🔤 Letters", colors: ["#ff8acb","#9b6bff"], onPick: () => goto({ name: "levels", mode: { category: "english", english: "letters" } }) },
-            { label: "📖 Words", colors: ["#4dc0ff","#5ee0c5"], onPick: () => goto({ name: "levels", mode: { category: "english", english: "words" } }) },
+              { label: "🔤 Letters", colors: ["var(--candy)","var(--violet)"], onPick: () => goto({ name: "levels", mode: { category: "english", english: "letters" } }) },
+              { label: "📖 Words", colors: ["var(--sky)","var(--mint)"], onPick: () => goto({ name: "levels", mode: { category: "english", english: "words" } }) },
           ]}
         />
       )}
@@ -179,13 +179,13 @@ export default function BalloonGameApp() {
 }
 
 /* ---------- Backgrounds ---------- */
-function MapBackdrop() {
+function StickerBackdrop() {
   return (
-    <div className="map-backdrop pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="map-sun" />
-      <div className="map-foliage map-foliage-a" />
-      <div className="map-foliage map-foliage-b" />
-      <div className="map-dots">· · · · ·</div>
+    <div className="sticker-backdrop pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span className="doodle doodle-one">✦</span>
+      <span className="doodle doodle-two">●</span>
+      <span className="doodle doodle-three">〰</span>
+      <span className="doodle doodle-four">★</span>
     </div>
   );
 }
@@ -200,29 +200,29 @@ function Home({ progress, onPickCategory }: {
   return (
     <div className="relative flex h-full w-full flex-col items-center overflow-hidden px-5 pb-6 pt-8">
       <div className="mb-3 text-center bounce-in">
-        <p className="map-kicker">TODAY'S EXPEDITION</p>
-        <h1 className="font-display text-4xl uppercase leading-none text-foreground">Choose an island</h1>
-        <p className="mt-2 text-sm font-semibold text-foreground/60">Follow the trail and collect every star.</p>
+        <p className="map-kicker">WHAT WILL WE LEARN?</p>
+        <h1 className="font-display text-4xl leading-none text-foreground">Pick a fun game!</h1>
+        <p className="mt-2 text-sm font-bold text-muted-foreground">Pop, learn, and collect shiny stars.</p>
       </div>
       <div className="mb-4 grid w-full max-w-sm grid-cols-2 gap-3">
         <StatCard icon="◆" label="Best" value={best} />
         <StatCard icon="★" label="Stars" value={stars} />
       </div>
-      <div className="adventure-trail relative mt-1 w-full max-w-sm flex-1">
+      <div className="sticker-book relative mt-1 grid w-full max-w-sm flex-1 grid-cols-2 gap-3 content-center">
         <BigCard
           onClick={() => onPickCategory("english")}
-          marker="Aa" title="English Island"
-          subtitle="Letters & Words"
+          marker="Aa" title="English"
+          subtitle="Letters & words"
           align="left"
         />
         <BigCard
           onClick={() => onPickCategory("math")}
-          marker="1+" title="Math Island"
-          subtitle="Numbers & Operations"
+          marker="1+" title="Math"
+          subtitle="Numbers & sums"
           align="right"
         />
       </div>
-      <div className="map-ticket mt-3">START YOUR JOURNEY</div>
+      <div className="play-hint mt-3">Choose a sticker to start!</div>
     </div>
   );
 }
@@ -244,13 +244,13 @@ function BigCard({ onClick, marker, title, subtitle, align }: {
 }) {
   return (
     <button onClick={onClick}
-      className={`island-stop island-stop-${align}`}>
+      className={`activity-sticker activity-sticker-${align}`}>
       <div className="island-marker">{marker}</div>
       <div className="island-label">
-          <div className="font-display text-lg uppercase leading-tight">{title}</div>
+          <div className="font-display text-xl leading-tight">{title}</div>
           <div className="text-sm font-semibold opacity-70">{subtitle}</div>
         </div>
-      <span className="island-arrow">→</span>
+       <span className="island-arrow" aria-hidden="true">▶</span>
     </button>
   );
 }
@@ -340,9 +340,9 @@ function Levels({ mode, progress, back, onPick }: {
             <button key={l.level}
               disabled={locked}
               onClick={() => !locked && onPick(l.level)}
-              className={`w-full rounded-2xl p-4 flex items-center gap-4 text-left shadow-lg bounce-in ${locked ? "bg-white/50 text-foreground/40" : "bg-white active:scale-[0.98]"}`}>
-              <div className="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl font-extrabold text-white shadow-md"
-                style={{ background: locked ? "#bbb" : `linear-gradient(135deg, ${BALLOON_COLORS[l.level % 8]}, ${BALLOON_COLORS[(l.level + 2) % 8]})` }}>
+              className={`level-sticker w-full p-4 flex items-center gap-4 text-left bounce-in ${locked ? "is-locked text-foreground/40" : "active:scale-[0.98]"}`}>
+              <div className="level-badge h-14 w-14 flex items-center justify-center text-2xl font-extrabold"
+                style={{ background: locked ? "var(--muted)" : BALLOON_COLORS[l.level % 8] }}>
                 {locked ? "🔒" : l.level}
               </div>
               <div className="flex-1">

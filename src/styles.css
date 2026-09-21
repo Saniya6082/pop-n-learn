@@ -41,8 +41,8 @@
   --border: oklch(0.35 0.07 315);
   --destructive: oklch(0.58 0.22 20);
   --success: oklch(0.68 0.13 165);
-  --font-display: "Archivo Black", system-ui, sans-serif;
-  --font-body: "Hind", system-ui, sans-serif;
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, sans-serif;
   --berry: oklch(0.62 0.2 12);
   --plum: oklch(0.27 0.07 315);
   --paper: oklch(0.97 0.02 20);
@@ -52,6 +52,9 @@
   --lagoon: oklch(0.66 0.13 220);
   --coral: oklch(0.68 0.18 28);
   --leaf: oklch(0.55 0.12 155);
+  --candy: oklch(0.68 0.22 5);
+  --violet: oklch(0.58 0.22 292);
+  --sky: oklch(0.75 0.14 235);
   --ink-shadow: 0 5px 0 color-mix(in oklab, var(--plum) 88%, transparent);
 }
 

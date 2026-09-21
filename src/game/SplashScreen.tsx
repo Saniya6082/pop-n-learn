@@ -20,26 +20,26 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
   return (
     <button
       onClick={handleClick}
-      className={`island-splash absolute inset-0 z-50 overflow-hidden transition-opacity duration-500 ${exiting ? "pointer-events-none opacity-0" : "opacity-100"}`}
+      className={`kids-splash absolute inset-0 z-50 overflow-hidden transition-opacity duration-500 ${exiting ? "pointer-events-none opacity-0" : "opacity-100"}`}
       aria-label="Start game"
     >
-      <div className="island-sun" />
-      <div className="island-leaf island-leaf-left" />
-      <div className="island-leaf island-leaf-right" />
-      <div className="island-route" aria-hidden="true">• · • · • · •</div>
+      <div className="sticker sticker-star" aria-hidden="true">★</div>
+      <div className="sticker sticker-letter" aria-hidden="true">A</div>
+      <div className="sticker sticker-number" aria-hidden="true">7</div>
+      <div className="sticker sticker-sum" aria-hidden="true">2+3</div>
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-8 text-center">
-        <div className="splash-stamp animate-bounce-gentle">
-          <span className="splash-stamp-small">THE GREAT</span>
-          <span className="splash-stamp-main">POP</span>
-          <span className="splash-stamp-small">EXPEDITION</span>
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-7 pb-20 text-center">
+        <div className="mascot-balloon animate-bounce-gentle" aria-hidden="true">
+          <span className="mascot-shine" />
+          <span className="mascot-eyes">● &nbsp; ●</span>
+          <span className="mascot-smile">⌣</span>
         </div>
-        <h1 className="mt-8 font-display text-5xl uppercase leading-none text-primary">Pop & Learn</h1>
-        <p className="mt-3 max-w-52 text-lg font-semibold leading-tight text-foreground/70">Two islands. A world of letters and numbers.</p>
+        <h1 className="kids-logo mt-8 font-display leading-none"><span>Pop</span> &amp; Learn</h1>
+        <p className="mt-4 max-w-64 text-lg font-bold leading-tight text-muted-foreground">Pop balloons. Grow your super brain!</p>
       </div>
 
-      <div className={`absolute bottom-10 left-1/2 z-20 -translate-x-1/2 transition-opacity duration-300 ${exiting ? "opacity-0" : "opacity-100 animate-pulse-soft"}`}>
-        <span className="map-ticket">TAP TO EXPLORE →</span>
+      <div className={`absolute bottom-9 left-1/2 z-20 w-56 -translate-x-1/2 transition-opacity duration-300 ${exiting ? "opacity-0" : "opacity-100 animate-pulse-soft"}`}>
+        <span className="play-sticker">Tap to play <span aria-hidden="true">▶</span></span>
       </div>
     </button>
   );
